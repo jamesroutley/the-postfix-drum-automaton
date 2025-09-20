@@ -3,11 +3,7 @@
 	import { Sequencer } from '$lib/sequencer.js';
 	import { URLStateManager, type DrumMachineState } from '$lib/urlState.js';
 	import { builtins } from '$lib/builtins.js';
-	import {
-		customOperations,
-		registerCustomOp,
-		unregisterCustomOp
-	} from '$lib/customOperations.js';
+	import { customOperations, registerCustomOp, unregisterCustomOp } from '$lib/customOperations.js';
 
 	let sequencer: Sequencer | undefined;
 	let isPlaying = false;
@@ -231,14 +227,7 @@
 
 		<label class="bpm-control">
 			BPM:
-			<input
-				type="number"
-				bind:value={bpm}
-				on:input={updateBpm}
-				min="30"
-				max="200"
-				step="1"
-			/>
+			<input type="number" bind:value={bpm} on:input={updateBpm} min="30" max="200" step="1" />
 		</label>
 	</div>
 
@@ -412,8 +401,8 @@
 		<p>
 			Each of the eight tracks is programmed using a custom <a
 				href="https://en.wikipedia.org/wiki/Stack-oriented_programming">stack-oriented</a
-			> programming language. The language operates over a Stack of numbers. A Stack is a data
-			type which you can add to the top of ('push'), and remove from the top of ('pop').
+			> programming language. The language operates over a Stack of numbers. A Stack is a data type which
+			you can add to the top of ('push'), and remove from the top of ('pop').
 		</p>
 
 		<p>To evaluate a program, the interpreter executes each word in the program in order:</p>
@@ -421,8 +410,8 @@
 		<ul>
 			<li>Numbers are pushed to the stack.</li>
 			<li>
-				Operations are executed and can pop zero or more numbers from the stack. The result
-				of the operation is pushed to the stack.
+				Operations are executed and can pop zero or more numbers from the stack. The result of the
+				operation is pushed to the stack.
 			</li>
 			<li><code>return</code> stops the program executing.</li>
 			<li>
@@ -434,15 +423,15 @@
 		<details>
 			<summary>An example [click to expand]</summary>
 			<p>
-				Given the initial stack <code>[]</code> and the program <code>1 2 +</code>, the
-				interpreter would execute the following steps:
+				Given the initial stack <code>[]</code> and the program <code>1 2 +</code>, the interpreter
+				would execute the following steps:
 			</p>
 			<ol>
 				<li>Push 1 to the stack: <code>[1]</code></li>
 				<li>Push 2 to the stack: <code>[1, 2]</code></li>
 				<li>
-					Execute the <code>+</code> operation, which pops two numbers from the stack and
-					pushes the sum: <code>[3]</code>
+					Execute the <code>+</code> operation, which pops two numbers from the stack and pushes the
+					sum: <code>[3]</code>
 				</li>
 			</ol>
 		</details>
@@ -451,20 +440,18 @@
 			<summary>A more complicated example [click to expand]</summary>
 			<p>
 				Given the initial stack <code>[]</code> and the program
-				<code>1 if 0 return then 2</code>, the interpreter would execute the following
-				steps:
+				<code>1 if 0 return then 2</code>, the interpreter would execute the following steps:
 			</p>
 			<ol>
 				<li>Push 1 to the stack: <code>[1]</code></li>
 				<li>
-					Execute the <code>if</code> operation, which pops the top number from the stack
-					and checks if it is non-zero. Since it is, the interpreter runs the code up to
-					the <code>then</code> block: <code>0 return</code>. This pushes 0 to the stack
-					and exits: <code>[0]</code>
+					Execute the <code>if</code> operation, which pops the top number from the stack and checks
+					if it is non-zero. Since it is, the interpreter runs the code up to the <code>then</code>
+					block: <code>0 return</code>. This pushes 0 to the stack and exits: <code>[0]</code>
 				</li>
 				<li>
-					Since we've returned early, the code after the <code>then</code> block is not executed,
-					so 2 isn't pushed to the stack.
+					Since we've returned early, the code after the <code>then</code> block is not executed, so
+					2 isn't pushed to the stack.
 				</li>
 			</ol>
 		</details>
@@ -474,20 +461,20 @@
 		<h3>The drum machine</h3>
 
 		<p>
-			Internally, the drum machine has a clock, which increments 24 times per beat. The number
-			of beats per minute (BPM) is configurable.
+			Internally, the drum machine has a clock, which increments 24 times per beat. The number of
+			beats per minute (BPM) is configurable.
 		</p>
 
 		<p>
-			On each increment, each track's program is called, with the current clock value passed
-			as the only item on the stack.
+			On each increment, each track's program is called, with the current clock value passed as the
+			only item on the stack.
 		</p>
 
 		<p>
 			24 times per beat is too fast for most music, so the built in operations <code>4n</code>
-			and <code>8n</code>, and <code>16n</code> are provided, which return early unless the current
-			clock value is for a quarter note, eighth note, or sixteenth note. Most patterms will start
-			with one of these operations.
+			and <code>8n</code>, and <code>16n</code> are provided, which return early unless the current clock
+			value is for a quarter note, eighth note, or sixteenth note. Most patterms will start with one
+			of these operations.
 		</p>
 	</div>
 
@@ -517,7 +504,10 @@
 	<div>
 		<h3>Custom Operations</h3>
 
-		<p>These operations are defined in the language itself, and can be used in patterns. You can define your own.</p>
+		<p>
+			These operations are defined in the language itself, and can be used in patterns. You can
+			define your own.
+		</p>
 
 		<table>
 			<thead>
@@ -534,9 +524,7 @@
 						<td><code>{op.body}</code></td>
 						<td class="remove-btn-cell">
 							{#if op.name !== '4n' && op.name !== '8n' && op.name !== '16n'}
-								<button on:click={() => removeCustomOp(op.name)} class="remove-btn">
-									X
-								</button>
+								<button on:click={() => removeCustomOp(op.name)} class="remove-btn"> X </button>
 							{/if}
 						</td>
 					</tr>
@@ -545,46 +533,30 @@
 		</table>
 
 		<div class="custom-ops-container">
-
-		<div class="custom-ops-controls">
-			<button on:click={() => (showAddOpForm = !showAddOpForm)}>
-				{showAddOpForm ? 'Cancel' : 'Add custom operation'}
-			</button>
-		</div>
-
-		{#if showAddOpForm}
-			<div class="add-op-form">
-				<div class="form-row">
-					<label for="op-name">Name:</label>
-					<input
-						id="op-name"
-						type="text"
-						bind:value={newOpName}
-						placeholder="plus1"
-					/>
-				</div>
-				<div class="form-row">
-					<label for="op-body">Body:</label>
-					<input
-						id="op-body"
-						type="text"
-						bind:value={newOpBody}
-						placeholder="1 +"
-					/>
-				</div>
-				<div class="form-row">
-					<button
-						on:click={addCustomOp}
-						disabled={!newOpName.trim() || !newOpBody.trim()}
-					>
-						Save operation
-					</button>
-				</div>
+			<div class="custom-ops-controls">
+				<button on:click={() => (showAddOpForm = !showAddOpForm)}>
+					{showAddOpForm ? 'Cancel' : 'Add custom operation'}
+				</button>
 			</div>
-		{/if}
 
+			{#if showAddOpForm}
+				<div class="add-op-form">
+					<div class="form-row">
+						<label for="op-name">Name:</label>
+						<input id="op-name" type="text" bind:value={newOpName} placeholder="plus1" />
+					</div>
+					<div class="form-row">
+						<label for="op-body">Body:</label>
+						<input id="op-body" type="text" bind:value={newOpBody} placeholder="1 +" />
+					</div>
+					<div class="form-row">
+						<button on:click={addCustomOp} disabled={!newOpName.trim() || !newOpBody.trim()}>
+							Save operation
+						</button>
+					</div>
+				</div>
+			{/if}
 		</div>
-
 	</div>
 </div>
 
@@ -604,7 +576,6 @@
 		/* text-align: center; */
 		margin-bottom: 2rem;
 	}
-
 
 	.custom-ops-controls {
 		padding-top: 16px;
@@ -664,13 +635,16 @@
 		width: 100%;
 	}
 
-table, th, td {
-  border: 1px solid;
-  border-style: dashed;
-border-collapse: collapse;
-}
+	table,
+	th,
+	td {
+		border: 1px solid;
+		border-style: dashed;
+		border-collapse: collapse;
+	}
 
-	th, td {
+	th,
+	td {
 		text-align: left;
 		vertical-align: top;
 		padding: 8px;
@@ -743,7 +717,7 @@ border-collapse: collapse;
 		background-color: #1a83b6;
 		color: white;
 		border-radius: 2px;
-		border:none;
+		border: none;
 		font-size: 1rem;
 	}
 
@@ -756,7 +730,7 @@ border-collapse: collapse;
 		background-color: #1a83b6;
 		color: white;
 		border-radius: 2px;
-		border:none;
+		border: none;
 		font-size: 1rem;
 	}
 
@@ -769,7 +743,7 @@ border-collapse: collapse;
 		background-color: #1a83b6;
 		color: white;
 		border-radius: 2px;
-		border:none;
+		border: none;
 		font-size: 1rem;
 	}
 
